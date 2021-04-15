@@ -54,10 +54,6 @@ async def on_voice_state_update(member, before, after):
 
         return
 
-    # elif (before.channel == voiceChannel) and (after.channel == None) and (member.name != "Announcer?"):
-
-    #     print(member.name + " left")
-
 
 @client.event
 async def on_message(message):
@@ -76,14 +72,7 @@ async def on_message(message):
 
         fileToPlay = message.content.lower() + ".wav"
 
-        if "print" in message.content.lower():
-            if (len(client.voice_clients) > 0):
-                print("Connected")
-            else:
-                print("Not Connected")
-            return
-
-        elif "sfx" in message.content.lower():
+        if "sfx" in message.content.lower():
             await message.channel.send(listOfSFXString)
             return
 

@@ -1,0 +1,6 @@
+.env
+.venv
+.vscode
+ffmpeg
+sounds
+RunDiscordBot.bat
