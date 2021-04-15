@@ -4,3 +4,5 @@
 ffmpeg
 sounds
 RunDiscordBot.bat
+*.json
+__pycache__
