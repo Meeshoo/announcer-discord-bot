@@ -8,7 +8,9 @@ class EconomyDatabase():
     EconomyData = {}
     ProductData = {}
     Ledger = []
+
     prettySfxList = ""
+    prettyBalanceData = ""
 
     def __init__(self, coinsPerInterval):
         self.LoadData()
@@ -17,6 +19,10 @@ class EconomyDatabase():
         for sfx in self.ProductData:
             self.prettySfxList = self.prettySfxList + sfx + ': ' + \
                 str(self.ProductData[sfx]['currentValue']) + '\n'
+
+        for person in self.EconomyData:
+            self.prettyBalanceData = self.prettyBalanceData + person + ': ' + \
+                    str(self.EconomyData[person]) + '\n'
 
         pass
 
@@ -51,7 +57,7 @@ class EconomyDatabase():
         pass
 
     def GetAllUserData(self):
-        return pprint.pformat(self.EconomyData)
+        return prettyBalanceData
 
     def GiveUsersMoney(self, members):
         for member in members:
