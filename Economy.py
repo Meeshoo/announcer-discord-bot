@@ -1,6 +1,7 @@
 import json
 import pprint
 import uuid
+from time import gmtime, strftime
 
 
 class EconomyDatabase():
@@ -14,7 +15,8 @@ class EconomyDatabase():
         self.coinsPerInterval = coinsPerInterval
 
         for sfx in self.ProductData:
-            self.prettySfxList = self.prettySfxList + sfx + ': ' + str(self.ProductData[sfx]['currentValue']) + '\n'
+            self.prettySfxList = self.prettySfxList + sfx + ': ' + \
+                str(self.ProductData[sfx]['currentValue']) + '\n'
 
         pass
 
@@ -60,13 +62,13 @@ class EconomyDatabase():
 
     def WriteDataToFile(self):
         with open('database.json', 'w') as json_file:
-            json.dump(self.EconomyData, json_file)
+            json.dump(self.EconomyData, json_file, indent=4)
         pass
 
     def WriteToLedger(self, transaction):
         self.Ledger.append(transaction)
         with open('ledger.json', 'w') as json_file:
-            json.dump(self.Ledger, json_file)
+            json.dump(self.Ledger, json_file, indent=4)
         pass
 
     async def Transaction(self, member, message):
@@ -80,6 +82,7 @@ class EconomyDatabase():
 
             newTransaction = {
                 "id": str(uuid.uuid4()),
+                "date": strftime("%Y-%m-%d %H:%M:%S", gmtime()),
                 "member": member,
                 "product": message.content.lower(),
                 "product_value": currentProduct
