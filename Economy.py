@@ -5,8 +5,8 @@ import uuid
 
 class EconomyDatabase():
     EconomyData = {}
+    ProductData = {}
     Ledger = []
-    coinsPerInterval = 0
 
     def __init__(self, coinsPerInterval):
         self.LoadData()
@@ -24,6 +24,11 @@ class EconomyDatabase():
                 self.Ledger = json.load(f)
         except:
             self.WriteToLedger({})
+        try:
+            with open('./discord_products.json') as f:
+                self.ProductData = json.load(f)
+        except:
+            print("!MISSING PRODUCT DATA!")
         pass
 
     def AddUserData(self, member):
@@ -59,23 +64,28 @@ class EconomyDatabase():
             json.dump(self.Ledger, json_file)
         pass
 
-    async def Transaction(self, member, product, message):
+    async def Transaction(self, member, message):
         memberBalance = self.EconomyData[member]
-        balanceDifference = memberBalance - product["value"]
+        product = message.content.lower()
+        currentProduct = self.ProductData[product]
+        balanceDifference = memberBalance - currentProduct["currentValue"]
         if balanceDifference >= 0:
-            self.EconomyData[member] -= product["value"]
+            self.EconomyData[member] -= currentProduct["currentValue"]
             self.WriteDataToFile()
 
             newTransaction = {
                 "id": str(uuid.uuid4()),
                 "member": member,
-                "value": product["value"]}
+                "product": message.content.lower(),
+                "product_value": currentProduct
+            }
             print(newTransaction)
             self.WriteToLedger(newTransaction)
-            await message.reply('*Kertching* Deducted: ' + str(product["value"]) + ' Playing sound', mention_author=False)
+            await message.reply('*Kertching* Deducted: ' + str(currentProduct["currentValue"]) + ' For Buying: ' + message.content.lower(), mention_author=False)
+            return True
 
-            # Play the audio product
         else:
             await message.reply('You do not have enough money', mention_author=False)
-            # mesage saying they don't have enough
+            return False
+
         pass

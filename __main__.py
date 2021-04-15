@@ -19,13 +19,13 @@ coinsPerInterval = os.getenv('COINSPERINTERVAL')
 
 
 class EconomyClient(discord.Client):
-    def __init__(self, botName, voiceChannel, musicChannel, currency, coinsPerInterval,  *args, **kwargs):
+    def __init__(self, botName, voiceChannelId, musicChannelId, currency, coinsPerInterval,  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.botName = botName
         self.SFXPlayer = SFXPlayer.SFXPlayer()
         self.Database = Economy.EconomyDatabase(coinsPerInterval)
-        self.voiceChannel = voiceChannel
-        self.musicChannel = musicChannel
+        self.voiceChannelId = voiceChannelId
+        self.musicChannelId = musicChannelId
         self.currency = currency
         self.my_background_task.start()
 
@@ -34,13 +34,13 @@ class EconomyClient(discord.Client):
         print(self.user.name)
         print(self.user.id)
         print('Channel ID:')
-        print(self.voiceChannel)
+        print(self.voiceChannelId)
         print('------')
 
     async def on_message(self, message):
 
         fileToPlay = message.content.lower() + ".wav"
-        voiceChannel = self.get_channel(self.voiceChannel)
+        voiceChannel = self.get_channel(self.voiceChannelId)
 
         if message.author == client.user:
             return
@@ -50,12 +50,13 @@ class EconomyClient(discord.Client):
             return
 
         if "sfx" in message.content.lower():
-            await message.reply(self.SFXPlayer.listOfSFXString, mention_author=False)
+            await message.reply(self.Database.ProductData, mention_author=False)
             return
 
         elif fileToPlay in self.SFXPlayer.listOfSFX:
-            await self.SFXPlayer.playAudio(
-                voiceChannel, "sounds/sfx/" + fileToPlay)
+            if await self.Database.Transaction(message.author.name, message):
+                await self.SFXPlayer.playAudio(
+                    voiceChannel, "sounds/sfx/" + fileToPlay)
             return
 
         # Economy Commands
@@ -67,21 +68,16 @@ class EconomyClient(discord.Client):
             await message.reply('Here is the current money pool: ' + str(self.Database.GetAllUserData()), mention_author=False)
             return
 
-        if message.content.startswith('play'):
-            await self.Database.Transaction(message.author.name, {
-                "value": 10}, message)
-            return
-
     async def on_voice_state_update(self, member, before, after):
-        voiceChannel = self.get_channel(self.voiceChannel)
-        if (before.channel == None) and (after.channel == self.get_channel(int(self.voiceChannel))) and (member.name != self.botName):
+        voiceChannel = self.get_channel(self.voiceChannelId)
+        if (before.channel == None) and (after.channel == self.get_channel(int(self.voiceChannelId))) and (member.name != self.botName):
             self.Database.AddUserData(member.name)
             await self.SFXPlayer.playAudio(
                 voiceChannel, self.SFXPlayer.getRandomSound(member))
 
     @tasks.loop(seconds=int(interval))  # task runs every x seconds
     async def my_background_task(self):
-        channel = self.get_channel(int(self.voiceChannel))
+        channel = self.get_channel(self.voiceChannelId)
         self.Database.GiveUsersMoney(channel.members)
 
     @my_background_task.before_loop
@@ -89,7 +85,10 @@ class EconomyClient(discord.Client):
         await self.wait_until_ready()  # wait until the bot logs in
 
 
-client = EconomyClient(botName=botName, voiceChannel=voiceChannelId, musicChannel=musicChannelId,
+intents = discord.Intents.default()
+intents.members = True
+
+client = EconomyClient(intents=intents, botName=botName, voiceChannelId=voiceChannelId, musicChannelId=musicChannelId,
                        currency=currency, coinsPerInterval=coinsPerInterval)
 
 client.run(botToken)
