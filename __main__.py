@@ -54,7 +54,7 @@ class EconomyClient(discord.Client):
             return
 
         if "sfx" in message.content.lower():
-            await message.reply(self.Database.ProductData, mention_author=False)
+            await message.reply(self.Database.prettySfxList, mention_author=False)
             return
 
         elif fileToPlay in self.SFXPlayer.listOfSFX:
