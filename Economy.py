@@ -20,10 +20,6 @@ class EconomyDatabase():
             self.prettySfxList = self.prettySfxList + sfx + ': ' + \
                 str(self.ProductData[sfx]['currentValue']) + '\n'
 
-        for person in self.EconomyData:
-            self.prettyBalanceData = self.prettyBalanceData + person + ': ' + \
-                    str(self.EconomyData[person]) + '\n'
-
         pass
 
     def LoadData(self):
@@ -57,7 +53,12 @@ class EconomyDatabase():
         pass
 
     def GetAllUserData(self):
-        return prettyBalanceData
+        self.prettyBalanceData = ""
+        for person in self.EconomyData:
+            self.prettyBalanceData = self.prettyBalanceData + person + ': ' + \
+                    str(self.EconomyData[person]) + '\n'
+
+        return self.prettyBalanceData
 
     def GiveUsersMoney(self, members):
         for member in members:

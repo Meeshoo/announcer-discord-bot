@@ -69,7 +69,7 @@ class EconomyClient(discord.Client):
             return
 
         if message.content.startswith('show me all the money'):
-            await message.reply('Here is the current money pool: \n' + self.Database.prettyBalanceData, mention_author=False)
+            await message.reply('Here is the current money pool: \n' + self.Database.GetAllUserData(), mention_author=False)
             return
 
     async def on_voice_state_update(self, member, before, after):
