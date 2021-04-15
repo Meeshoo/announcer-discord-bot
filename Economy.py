@@ -7,10 +7,15 @@ class EconomyDatabase():
     EconomyData = {}
     ProductData = {}
     Ledger = []
+    prettySfxList = ""
 
     def __init__(self, coinsPerInterval):
         self.LoadData()
         self.coinsPerInterval = coinsPerInterval
+
+        for sfx in self.ProductData:
+            self.prettySfxList = self.prettySfxList + sfx + ': ' + str(self.ProductData[sfx]['currentValue']) + '\n'
+
         pass
 
     def LoadData(self):
