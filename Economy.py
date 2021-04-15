@@ -32,10 +32,10 @@ class EconomyDatabase():
             self.WriteDataToFile()
         pass
 
-    def GetUserData(self, member):
+    def GetUserData(self, inMember):
         for member in self.EconomyData:
-            if member == member:
-                return self.EconomyData[member]
+            if member == inMember:
+                return self.EconomyData[inMember]
         pass
 
     def GetAllUserData(self):
