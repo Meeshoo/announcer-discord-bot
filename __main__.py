@@ -42,6 +42,10 @@ class EconomyClient(discord.Client):
         fileToPlay = message.content.lower() + ".wav"
         voiceChannel = self.get_channel(self.voiceChannelId)
 
+        if (fileToPlay == "chug.wav") and (message.author != "Callumca#1275"):
+            await message.reply("The chug can only be played by those who wield the power to do so", mention_author=False)
+            return
+
         if message.author == client.user:
             return
 
