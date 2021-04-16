@@ -69,7 +69,7 @@ class EconomyDatabase():
     def GiveUsersMoney(self, members):
         if len(members) > 1:
             for member in members:
-                if member.name in self.EconomyData:
+                if member.name in self.EconomyData and not member.bot:
                     self.EconomyData[member.name] += int(
                         self.coinsPerInterval) + len(members)
             self.WriteDataToFile()
