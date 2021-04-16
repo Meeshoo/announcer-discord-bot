@@ -54,6 +54,7 @@ class EconomyClient(discord.Client):
             return
 
         if "sfx" in message.content.lower():
+            self.Database.GetSFXList()
             await message.reply(self.Database.prettySfxList, mention_author=False)
             return
 
