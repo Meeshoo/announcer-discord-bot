@@ -138,7 +138,7 @@ class EconomyDatabase():
             print(newTransaction)
             self.WriteToLedger(newTransaction)
 
-            await message.reply('*Kertching* Deducted: ' + str(currentProduct["currentValue"]) + ' For Buying: ' + message.content.lower(), mention_author=False)
+            await message.reply('*Kerching* Deducted: ' + str(currentProduct["currentValue"]) + ' For Buying: ' + message.content.lower(), mention_author=False)
             self.IncreaseProductPrice(product)
             return True
 
