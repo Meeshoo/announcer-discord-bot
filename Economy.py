@@ -66,11 +66,12 @@ class EconomyDatabase():
         return self.prettyBalanceData
 
     def GiveUsersMoney(self, members):
-        for member in members:
-            if member.name in self.EconomyData:
-                self.EconomyData[member.name] += int(
-                    self.coinsPerInterval) + len(members)
-        self.WriteDataToFile()
+        if len(members) > 1:
+            for member in members:
+                if member.name in self.EconomyData:
+                    self.EconomyData[member.name] += int(
+                        self.coinsPerInterval) + len(members)
+            self.WriteDataToFile()
         pass
 
     def WriteDataToFile(self):
