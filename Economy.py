@@ -17,9 +17,7 @@ class EconomyDatabase():
         self.LoadData()
         self.coinsPerInterval = coinsPerInterval
 
-        for sfx in self.ProductData:
-            self.prettySfxList = self.prettySfxList + sfx + ': ' + \
-                str(self.ProductData[sfx]['currentValue']) + '\n'
+        self.GetSFXList()
 
         pass
 
@@ -39,6 +37,12 @@ class EconomyDatabase():
                 self.ProductData = json.load(f)
         except:
             print("!MISSING PRODUCT DATA!")
+        pass
+
+    def GetSFXList(self):
+        for sfx in self.ProductData:
+            self.prettySfxList = self.prettySfxList + sfx + ': ' + \
+                str(self.ProductData[sfx]['currentValue']) + '\n'
         pass
 
     def AddUserData(self, member):
@@ -131,8 +135,9 @@ class EconomyDatabase():
 
             print(newTransaction)
             self.WriteToLedger(newTransaction)
-            self.IncreaseProductPrice(product)
+
             await message.reply('*Kertching* Deducted: ' + str(currentProduct["currentValue"]) + ' For Buying: ' + message.content.lower(), mention_author=False)
+            self.IncreaseProductPrice(product)
             return True
 
         else:
