@@ -38,6 +38,7 @@ class EconomyDatabase():
         pass
 
     def GetSFXList(self):
+        self.prettySfxList = ""
         for sfx in self.ProductData:
             self.prettySfxList = self.prettySfxList + sfx + ': ' + \
                 str(self.ProductData[sfx]['currentValue']) + '\n'
