@@ -54,6 +54,7 @@ class EconomyClient(discord.Client):
             return
 
         if "sfx" in message.content.lower():
+            self.Database.GetSFXList()
             await message.reply(self.Database.prettySfxList, mention_author=False)
             return
 
@@ -83,6 +84,7 @@ class EconomyClient(discord.Client):
     async def my_background_task(self):
         channel = self.get_channel(self.voiceChannelId)
         self.Database.GiveUsersMoney(channel.members)
+        self.Database.DecreaseProductPrices()
 
     @my_background_task.before_loop
     async def before_my_task(self):
