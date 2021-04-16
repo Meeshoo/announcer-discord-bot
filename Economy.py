@@ -2,6 +2,7 @@ import json
 import pprint
 import uuid
 from time import gmtime, strftime
+import math
 
 
 class EconomyDatabase():
@@ -56,7 +57,8 @@ class EconomyDatabase():
     def GiveUsersMoney(self, members):
         for member in members:
             if member.name in self.EconomyData:
-                self.EconomyData[member.name] += int(self.coinsPerInterval)
+                self.EconomyData[member.name] += int(
+                    self.coinsPerInterval) + len(members)
         self.WriteDataToFile()
         pass
 
@@ -69,6 +71,38 @@ class EconomyDatabase():
         self.Ledger.append(transaction)
         with open('ledger.json', 'w') as json_file:
             json.dump(self.Ledger, json_file, indent=4)
+        pass
+
+    def DecreaseProductPrices(self):
+        for product in self.ProductData:
+
+            currentProductValue = self.ProductData[product]["currentValue"]
+            currentProductDecayRate = self.ProductData[product]["decayRate"]
+
+            #--Main Decay math here--#
+            newProductValue = math.floor(
+                currentProductValue*(1 - currentProductDecayRate))
+            #--Main Decay math here--#
+
+            if newProductValue > self.ProductData[product]["initialValue"]:
+                self.ProductData[product]["currentValue"] = newProductValue
+                try:
+                    with open('discord_products.json', 'w') as json_file:
+                        json.dump(self.ProductData, json_file, indent=4)
+                except:
+                    print("!MISSING PRODUCT DATA!")
+        pass
+
+    def IncreaseProductPrice(self, product):
+        currentProduct = self.ProductData[product]
+        newProductValue = math.floor(
+            currentProduct["currentValue"]*(1 + currentProduct["RarityRate"]))
+        self.ProductData[product]["currentValue"] = newProductValue
+        try:
+            with open('discord_products.json', 'w') as json_file:
+                json.dump(self.ProductData, json_file, indent=4)
+        except:
+            print("!MISSING PRODUCT DATA!")
         pass
 
     async def Transaction(self, member, message):
@@ -87,8 +121,10 @@ class EconomyDatabase():
                 "product": message.content.lower(),
                 "product_value": currentProduct
             }
+
             print(newTransaction)
             self.WriteToLedger(newTransaction)
+            self.IncreaseProductPrice(product)
             await message.reply('*Kertching* Deducted: ' + str(currentProduct["currentValue"]) + ' For Buying: ' + message.content.lower(), mention_author=False)
             return True
 
