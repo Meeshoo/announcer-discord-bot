@@ -76,7 +76,8 @@ class EconomyClient(discord.Client):
     async def on_voice_state_update(self, member, before, after):
         voiceChannel = self.get_channel(self.voiceChannelId)
         if (before.channel == None) and (after.channel == self.get_channel(int(self.voiceChannelId))) and (member.name != self.botName):
-            self.Database.AddUserData(member.name)
+            if not member.bot:
+                self.Database.AddUserData(member.name)
             await self.SFXPlayer.playAudio(
                 voiceChannel, self.SFXPlayer.getRandomSound(member))
 
