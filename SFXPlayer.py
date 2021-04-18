@@ -33,6 +33,7 @@ class SFXPlayer():
             executable="ffmpeg/bin/ffmpeg.exe", source=path))
         while vc.is_playing():
             time.sleep(.1)
+        time.sleep(0.2)
         await vc.disconnect()
 
         return

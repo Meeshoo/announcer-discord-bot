@@ -93,7 +93,7 @@ class EconomyDatabase():
             currentProductDecayRate = self.ProductData[product]["decayRate"]
 
             #--Main Decay math here--#
-            newProductValue = math.floor(
+            newProductValue = math.ceil(
                 currentProductValue*(1 - currentProductDecayRate))
             #--Main Decay math here--#
 
@@ -108,7 +108,7 @@ class EconomyDatabase():
 
     def IncreaseProductPrice(self, product):
         currentProduct = self.ProductData[product]
-        newProductValue = math.floor(
+        newProductValue = math.ceil(
             currentProduct["currentValue"]*(1 + currentProduct["RarityRate"]))
         self.ProductData[product]["currentValue"] = newProductValue
         try:
