@@ -1,3 +1,7 @@
 discord
 PyNaCl
 python-dotenv
+psutil
+kaleido
+plotly
+pandas
