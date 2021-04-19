@@ -1,8 +1,8 @@
 .env
 .venv
 .vscode
+*.bat
+*.json
 ffmpeg
 sounds
-RunDiscordBot.bat
-*.json
 __pycache__
