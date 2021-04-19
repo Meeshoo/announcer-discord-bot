@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import Economy
 import SFXPlayer
+import DataVisualiser
 
 # Load environment variables
 load_dotenv()
@@ -24,6 +25,7 @@ class EconomyClient(discord.Client):
         self.botName = botName
         self.SFXPlayer = SFXPlayer.SFXPlayer()
         self.Database = Economy.EconomyDatabase(coinsPerInterval)
+        self.Visualiser = DataVisualiser.DataVisualiser()
         self.voiceChannelId = voiceChannelId
         self.musicChannelId = musicChannelId
         self.currency = currency
@@ -48,6 +50,17 @@ class EconomyClient(discord.Client):
         if message.content.startswith('+test'):
             await message.reply("I log in, therefore I am", mention_author=False)
             return
+
+        if message.content.startswith("+price"):
+
+            messageArray = message.content.split()
+
+            if len(messageArray) != 2:
+                await message.reply("Price takes exactly 1 argument, you plebber", mention_author=False)
+                return
+
+            self.Visualiser.MakeGraph(messageArray[1])
+            await message.reply(file=discord.File('graph.jpeg'), mention_author=False)
 
         if "sfx" in message.content.lower():
             self.Database.GetSFXList()
