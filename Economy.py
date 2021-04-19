@@ -86,24 +86,25 @@ class EconomyDatabase():
             json.dump(self.Ledger, json_file, indent=4)
         pass
 
-    def DecreaseProductPrices(self):
-        for product in self.ProductData:
+    def DecreaseProductPrices(self, members):
+        if len(members) > 1:
+            for product in self.ProductData:
 
-            currentProductValue = self.ProductData[product]["currentValue"]
-            currentProductDecayRate = self.ProductData[product]["decayRate"]
+                currentProductValue = self.ProductData[product]["currentValue"]
+                currentProductDecayRate = self.ProductData[product]["decayRate"]
 
-            #--Main Decay math here--#
-            newProductValue = math.ceil(
-                currentProductValue*(1 - currentProductDecayRate))
-            #--Main Decay math here--#
+                #--Main Decay math here--#
+                newProductValue = math.ceil(
+                    currentProductValue*(1 - currentProductDecayRate))
+                #--Main Decay math here--#
 
-            if newProductValue > self.ProductData[product]["initialValue"]:
-                self.ProductData[product]["currentValue"] = newProductValue
-                try:
-                    with open('discord_products.json', 'w') as json_file:
-                        json.dump(self.ProductData, json_file, indent=4)
-                except:
-                    print("!MISSING PRODUCT DATA!")
+                if newProductValue > self.ProductData[product]["initialValue"]:
+                    self.ProductData[product]["currentValue"] = newProductValue
+                    try:
+                        with open('discord_products.json', 'w') as json_file:
+                            json.dump(self.ProductData, json_file, indent=4)
+                    except:
+                        print("!MISSING PRODUCT DATA!")
         pass
 
     def IncreaseProductPrice(self, product):

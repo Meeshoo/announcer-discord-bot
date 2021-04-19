@@ -82,7 +82,7 @@ class EconomyClient(discord.Client):
     async def my_background_task(self):
         channel = self.get_channel(self.voiceChannelId)
         self.Database.GiveUsersMoney(channel.members)
-        self.Database.DecreaseProductPrices()
+        self.Database.DecreaseProductPrices(channel.members)
 
     @my_background_task.before_loop
     async def before_my_task(self):
