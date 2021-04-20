@@ -3,7 +3,6 @@ import random
 import time
 import discord
 
-
 class SFXPlayer():
 
     def __init__(self):
@@ -16,6 +15,12 @@ class SFXPlayer():
                 self.listOfSFX.append(file)
 
     def getRandomSound(self, member):
+<<<<<<< HEAD
+=======
+        for files in os.walk("./sounds/" + member.name):
+            for file in files:
+                self.memberSounds.append(file)
+>>>>>>> Fix formatting, fix getRandomSound for linux
 
         filePath = os.listdir("./sounds/" + member.name + "/")
         for file in filePath:
