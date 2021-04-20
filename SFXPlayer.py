@@ -20,13 +20,14 @@ class SFXPlayer():
         filePath = os.listdir("./sounds/" + member.name + "/")
         for file in filePath:
             self.memberSounds.append(file)
-
+        
         sound = self.memberSounds[random.randint(
             0, len(self.memberSounds) - 1)]
 
         return ("sounds/" + member.name + "/" + sound)
 
     async def playAudio(self, voiceChannel, path):
+
         voiceChannel = voiceChannel
 
         vc = await voiceChannel.connect()

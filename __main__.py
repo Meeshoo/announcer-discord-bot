@@ -74,7 +74,7 @@ class EconomyClient(discord.Client):
         if (before.channel == None) and (after.channel == self.get_channel(int(self.voiceChannelId))) and (member.name != self.botName):
             if not member.bot:
                 self.Database.AddUserData(member.name)
-            time.sleep(0.3)
+            time.sleep(0.5)
             await self.SFXPlayer.playAudio(
                 voiceChannel, self.SFXPlayer.getRandomSound(member))
 
