@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import Economy
 import SFXPlayer
+import DataVisualiser
 
 # Load environment variables
 load_dotenv()
@@ -24,6 +25,7 @@ class EconomyClient(discord.Client):
         self.botName = botName
         self.SFXPlayer = SFXPlayer.SFXPlayer()
         self.Database = Economy.EconomyDatabase(coinsPerInterval)
+        self.Visualiser = DataVisualiser.DataVisualiser()
         self.voiceChannelId = voiceChannelId
         self.musicChannelId = musicChannelId
         self.currency = currency
@@ -49,6 +51,17 @@ class EconomyClient(discord.Client):
             await message.reply("I log in, therefore I am", mention_author=False)
             return
 
+        if message.content.startswith("+price"):
+
+            messageArray = message.content.split()
+
+            if len(messageArray) != 2:
+                await message.reply("Price takes exactly 1 argument, you plebber", mention_author=False)
+                return
+
+            self.Visualiser.MakeGraph(messageArray[1])
+            await message.reply(file=discord.File('graph.jpeg'), mention_author=False)
+
         if "sfx" in message.content.lower():
             self.Database.GetSFXList()
             await message.reply(self.Database.prettySfxList, mention_author=False)
@@ -70,8 +83,10 @@ class EconomyClient(discord.Client):
             return
 
     async def on_voice_state_update(self, member, before, after):
+
         voiceChannel = self.get_channel(self.voiceChannelId)
-        if (before.channel == None) and (after.channel == self.get_channel(int(self.voiceChannelId))) and (member.name != self.botName):
+
+        if (before.channel == None) and (after.channel == voiceChannel) and (member.name != self.botName):
             if not member.bot:
                 self.Database.AddUserData(member.name)
             time.sleep(0.5)

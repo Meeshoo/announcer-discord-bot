@@ -3,6 +3,7 @@
 .vscode
 *.bat
 *.json
+*.jpeg
 ffmpeg
 sounds
 __pycache__
