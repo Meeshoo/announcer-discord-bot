@@ -25,6 +25,9 @@ class DataVisualiser():
 
     def MakeGraph(self, soundName):
 
+        self.DateData.clear()
+        self.PriceData.clear()
+
         for entry in self.Ledger:
             if entry['product'] == soundName:
                 self.DateData.append(entry['date'])

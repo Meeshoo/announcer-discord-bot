@@ -55,9 +55,9 @@ class EconomyClient(discord.Client):
 
             messageArray = message.content.split()
 
-            if (messageArray[1] == "call" or "you") and (messageArray[2] == "police" or "died"):
-
-                sound = messageArray[1] + messageArray[2]
+            if (len(messageArray) == 3) and ((messageArray[1] == "call") or (messageArray[1] == "you")):
+                
+                sound = messageArray[1] + " " + messageArray[2]
                 self.Visualiser.MakeGraph(sound)
                 await message.reply(file=discord.File('graph.jpeg'), mention_author=False)
 
