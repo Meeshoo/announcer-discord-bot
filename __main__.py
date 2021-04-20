@@ -83,8 +83,10 @@ class EconomyClient(discord.Client):
             return
 
     async def on_voice_state_update(self, member, before, after):
+
         voiceChannel = self.get_channel(self.voiceChannelId)
-        if (before.channel == None) and (after.channel == self.get_channel(int(self.voiceChannelId))) and (member.name != self.botName):
+
+        if (before.channel == None) and (after.channel == voiceChannel) and (member.name != self.botName):
             if not member.bot:
                 self.Database.AddUserData(member.name)
             time.sleep(0.3)
