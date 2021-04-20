@@ -55,8 +55,17 @@ class EconomyClient(discord.Client):
 
             messageArray = message.content.split()
 
+            if (messageArray[1] == "call" or "you") and (messageArray[2] == "police" or "died"):
+
+                sound = messageArray[1] + messageArray[2]
+                self.Visualiser.MakeGraph(sound)
+                await message.reply(file=discord.File('graph.jpeg'), mention_author=False)
+
+                return
+
             if len(messageArray) != 2:
-                await message.reply("Price takes exactly 1 argument, you plebber", mention_author=False)
+
+                await message.reply("Price takes exactly 1 argument", mention_author=False)
                 return
 
             self.Visualiser.MakeGraph(messageArray[1])
