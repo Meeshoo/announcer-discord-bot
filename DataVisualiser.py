@@ -25,6 +25,8 @@ class DataVisualiser():
 
     def MakeGraph(self, soundName):
 
+        self.LoadData()
+
         self.DateData.clear()
         self.PriceData.clear()
 
