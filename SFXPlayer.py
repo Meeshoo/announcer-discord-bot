@@ -15,6 +15,8 @@ class SFXPlayer():
                 self.listOfSFX.append(file)
 
     def getRandomSound(self, member):
+        
+        self.memberSounds.clear()
 
         filePath = os.listdir("./sounds/" + member.name + "/")
         for file in filePath:
