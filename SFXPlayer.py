@@ -35,8 +35,8 @@ class SFXPlayer():
         vc.play(discord.FFmpegPCMAudio(
             executable="/usr/bin/ffmpeg", source=path))
         while vc.is_playing():
-            time.sleep(.1)
-        time.sleep(0.2)
+            time.sleep(.3)
+        time.sleep(0.5)
         await vc.disconnect()
 
         return
