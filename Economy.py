@@ -62,7 +62,7 @@ class EconomyDatabase():
         self.prettyBalanceData = ""
         for person in self.EconomyData:
             self.prettyBalanceData = self.prettyBalanceData + person + ': ' + \
-                    str(self.EconomyData[person]) + '\n'
+                    str("{:,}".format(self.EconomyData[person])) + '\n'
 
         return self.prettyBalanceData
 

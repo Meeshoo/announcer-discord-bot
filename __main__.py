@@ -84,7 +84,7 @@ class EconomyClient(discord.Client):
 
         # Economy Commands
         if message.content.startswith('show me the money'):
-            await message.reply('You have: ' + str(self.Database.GetUserData(message.author.name)) + " " + self.currency, mention_author=False)
+            await message.reply('You have: ' + "{:,}".format(self.Database.GetUserData(message.author.name)) + " " + self.currency, mention_author=False)
             return
 
         if message.content.startswith('show me all the money'):
